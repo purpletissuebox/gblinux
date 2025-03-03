@@ -40,4 +40,4 @@ ${OBJ}/%.o: ${SRC}/%.asm
 	@#mirror the folder structure
 	@mkdir -p "${@D}"
 	@#assemble the .asm ($^)
-	rgbasm ${ASMFLAGS} -o ${@} $<
+	rgbasm ${ASMFLAGS} -o ${@} -I ./include $<
