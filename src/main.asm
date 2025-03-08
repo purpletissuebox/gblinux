@@ -22,9 +22,9 @@ strcpy::
 	ds 0x0018 - @
 waitVRAM::
 	;routine takes 44 dots at most, ppu takes 167 dots at least.
-	;so worst cast you have 123 dots = 30 clocks of vram time after calling this
+	;so worst case you have 123 dots = 30 clocks of vram time after calling this
 	ldh a, [IO_LCD_STATUS]
-	and PPU_MODE
+	and (PPU_MODE & 2)
 	jr nz, waitVRAM
 	ret
 	ds 0x0020 - @
