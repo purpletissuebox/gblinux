@@ -43,6 +43,7 @@ VBLANK::
 			ldh [c], a
 			inc c
 			.copy:
+				rst waitVRAM
 				REPT COLORS_PER_LOOP*2
 				ldi a, [hl]
 				ldh [c], a
