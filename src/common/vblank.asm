@@ -35,7 +35,8 @@ VBLANK::
 	.noScroll:
 	ei
 	rr e
-	jr c, VBLANK.noPalettes
+	jr nc, VBLANK.noPalettes
+		ld hl, shadow_palettes_bkg
 		ld c, LOW(IO_CRAM_BKG_SELECT)
 		.loadColors:
 			ld b, 0x20/COLORS_PER_LOOP
@@ -55,7 +56,7 @@ VBLANK::
 			bit 1, c
 		jr nz, VBLANK.loadColors
 	
-	.noPalette:
+	.noPalettes:
 	pop af
 	ldh [IO_WRAM_BANK], a
 	
