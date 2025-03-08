@@ -97,7 +97,8 @@ oam_function:
 
 SECTION "VBLANK_WAIT", ROM0
 waitFrame::
-	ld a, 0x01
+	ldh a, [redraw_screen]
+	or 0x80
 	ldh [redraw_screen], a
 	.loop:
 		halt
