@@ -19,3 +19,4 @@ queueGfxTask::
 	or RELOAD_GFX_TASK
 	ldh [redraw_screen], a
 	restoreRamBank
+	ret
