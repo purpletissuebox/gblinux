@@ -16,7 +16,7 @@ queueGfxTask::
 	ld a, l
 	cp LOW(gfx_task_queue + 2 + 6*10)
 	jr c, queueGfxTask.savePtr
-		ld a, LOW(gfx_task_tail)
+		ld a, LOW(gfx_task_queue)
 	.savePtr:
 	ld [gfx_task_tail], a
 	ldh a, [redraw_screen]
