@@ -1,3 +1,7 @@
+INCLUDE "hwregs.inc"
+INCLUDE "macros.inc"
+INCLUDE "common/vblank.inc"
+
 SECTION "GFX ROUTINES", ROM0
 queueGfxTask::
 	swapRamBank gfx_task_queue
