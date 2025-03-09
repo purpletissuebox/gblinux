@@ -7,5 +7,4 @@ IF _NARG > 4
 ELSE
 	db ((\1.end - \1) >> 4) - 1
 ENDC
-dw 0xFFFF
 ENDM
