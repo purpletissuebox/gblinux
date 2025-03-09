@@ -1,3 +1,5 @@
+INCLUDE "hwregs.inc"
+
 SECTION "HELPERS", ROM0
 banked::
 	ldh a, [rom_bank]

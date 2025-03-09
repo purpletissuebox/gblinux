@@ -1,4 +1,6 @@
 INCLUDE "hwregs.inc"
+INCLUDE "common/vblank.inc"
+
 DEF COLORS_PER_LOOP EQU 2
 
 SECTION "VBLANK_HANDLER", ROM0
@@ -85,7 +87,7 @@ VBLANK::
 				jr nc, .pauseGfxTasks
 			ldh [IO_DMA_TRIGGER], a
 			ld a, l
-			ld l, gfx_task_head
+			ld l, LOW(gfx_task_head)
 			cp LOW(gfx_task_queue + 2 + 6*10)
 			jr c, .savePtr
 				ld a, LOW(gfx_task_tail)
@@ -96,7 +98,7 @@ VBLANK::
 		jr z, .gfx_loop		
 		.pauseGfxTasks:
 		ld a, RELOAD_GFX_TASK
-		ldh [reload_screen], a
+		ldh [redraw_screen], a
 	.noGfxTasks:
 	pop af
 	ldh [IO_WRAM_BANK], a
