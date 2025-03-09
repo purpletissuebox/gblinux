@@ -1,8 +1,22 @@
+SECTION FRAGMENT "VRAM", VRAM, BANK[0]
+	vram_tile_mem_0::
+		ds 0x0800
+	vram_tile_mem_1::
+		ds 0x0800
+	vram_tile_mem_2::
+		ds 0x0800
+	vram_bkg_map::
+		ds 0x0400
+	vram_win_map::
+		ds 0x0400
+
 SECTION FRAGMENT "GFX_VARS", WRAMX, ALIGN[10]
 	shadow_bkg_map::
 		ds 0x0400
+		.end::
 	shadow_win_map::
 		ds 0x0400
+		.end::
 ENDSECTION
 
 SECTION FRAGMENT "GFX_VARS", WRAMX, ALIGN[8]
@@ -31,7 +45,9 @@ SECTION FRAGMENT "GFX_VARS", WRAMX
 	.end::
 ENDSECTION
 
-SECTION FRAGMENT "GFX_VARS", WRAMX, ALIGN[6]
+SECTION FRAGMENT "GFX_VARS", WRAMX
+	ds 0x40 - (@ & 0x3F)
+	align 6
 	gfx_task_tail::
 		ds 1
 	gfx_task_head::
