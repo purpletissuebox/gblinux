@@ -1,4 +1,4 @@
-MACRO GFX_TASK
+MACRO GFXTASK
 dw (\1 + \2) | (BANK(\1) & 0x07)
 db BANK(\1)
 dw (\3 + \4) | BANK(\3)
