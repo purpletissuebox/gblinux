@@ -73,8 +73,9 @@ ds $150-@ ;reserve space for logo, etc
 SECTION "MAIN", ROM0
 MAIN::
 	call biosMain
-	halt
-	jr MAIN
+	.loop:
+		halt
+	jr MAIN.loop
 
 SECTION "RAMTEST", ROMX
 ramTest::
@@ -95,11 +96,11 @@ ramTest::
     ld [0x4000], a 
     ld a, [0xA000]
     cp c
-    jr nz, .ram_failure ;didn't get same value back
+    jr nz, .exit ;didn't get same value back
     dec b 
     jr nz, .read_test    ; i > 0 
-  .success:
-    ;do something. go to next step
-    ret
-  .ram_failure: 
+  .exit:
+	ld a, 0x10
+	sub b
+	ld b, a ;b = number of banks successfully read
     ret
