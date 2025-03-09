@@ -76,6 +76,8 @@ VBLANK::
 			ldh [IO_DMA_DST_L], a
 			and 0x01
 			ldh [IO_VRAM_BANK], a
+			ldi a, [hl]
+			ldh [IO_DMA_DST_H], a
 			ldh a, [IO_LCD_CURRENT_LINE]
 			cpl
 			add 0x9A
@@ -95,7 +97,8 @@ VBLANK::
 			ldd [hl], a
 			cp [hl]
 			inc hl
-		jr z, .gfx_loop		
+		jr nz, .gfx_loop
+		jr .noGfxTasks
 		.pauseGfxTasks:
 		ld a, RELOAD_GFX_TASK
 		ldh [redraw_screen], a
@@ -107,5 +110,4 @@ VBLANK::
 	pop de
 	pop bc
 	pop af
-	add sp, 0x0002
 	reti
