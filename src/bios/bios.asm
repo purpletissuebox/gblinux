@@ -1,3 +1,8 @@
+INCLUDE "hwregs.inc"
+INCLUDE "macros.inc"
+INCLUDE "helpers.inc"
+INCLUDE "gfx.inc"
+
 DEF TILES_PER_BATCH EQU (0x40 - 1)
 
 SECTION "BIOSMAIN", ROMX
@@ -26,9 +31,9 @@ biosMain::
 	jr nz, .clearScreen
 	
 	ld de, bios_strings
-	ldoord hl, shadow_bkg_map, 1, 1
+	ldcoord hl, shadow_bkg_map, 1, 1
 	rst strcpy
-	ldoord hl, shadow_bkg_map, 2, 3
+	ldcoord hl, shadow_bkg_map, 2, 3
 	rst strcpy
 	call_banked ramTest
 	ld a, b
@@ -42,9 +47,6 @@ biosMain::
 	rst strcpy
 	ret
 	
-	
-	
-		RAM TEST 128K OK
 bios_strings:
 	db "GBLINUX BIOS v0.1", 0
 	db "RAM TEST ", 0
@@ -53,14 +55,15 @@ bios_strings:
 	db "64K OK", 0
 
 bios_map_task:
-	GFXTASK shadow_bkg_map, 0, 0x9800, 0
+	GFXTASK shadow_bkg_map, 0, vram_bkg_map, 0
 
 bios_tile_tasks:
-SET I = 0
+DEF I = 0
 REPT 4
-	GFXTASK bios_tile_data, I*TILES_PER_BATCH*0x10, 0x8800, I*TILES_PER_BATCH*0x10, TILES_PER_BATCH*0x10
-	I = I + 1
+	GFXTASK bios_tile_data, I*TILES_PER_BATCH*0x10, vram_tile_mem_1, I*TILES_PER_BATCH*0x10, TILES_PER_BATCH
+	DEF I = I + 1
+ENDR
 	
-SECTTION "BIOSTILES", ROMX
+SECTION "BIOSTILES", ROMX
 bios_tile_data:
 	INCBIN "./src/bios/font.bin"
