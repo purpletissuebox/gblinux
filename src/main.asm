@@ -1,7 +1,7 @@
 INCLUDE "hwregs.inc"
 
 SECTION "VECTORS", ROM0[0x0000]
-call_hl::
+callHL::
 	jp hl
 	ds 0x0008 - @
 memcpy::
