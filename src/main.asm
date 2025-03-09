@@ -72,5 +72,6 @@ ds $150-@ ;reserve space for logo, etc
 
 SECTION "MAIN", ROM0
 MAIN::
+	call biosMain
 	halt
 	jr MAIN
