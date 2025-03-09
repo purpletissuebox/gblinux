@@ -24,3 +24,6 @@ ENDM
 MACRO restoreRamBank
 pop af
 ldh [IO_WRAM_BANK], a
+
+MACRO ldcoord
+ld \1, \2 + ((\4 << 5) | \3)
