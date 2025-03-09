@@ -1,5 +1,6 @@
 INCLUDE "hwregs.inc"
 INCLUDE "macros.inc"
+INCLUDE "common/vblank.inc"
 
 SECTION "INIT", ROM0
 
@@ -28,6 +29,12 @@ init::
 	ldi [hl], a
 	ldi [hl], a
 	ld a, 0xA7
+	ldi [hl], a
+	ldi [hl], a
+
+	;init gfxtask queue
+	ld a, LOW(gfx_task_queue)
+	ld hl, gfx_task_tail
 	ldi [hl], a
 	ldi [hl], a
 	
@@ -75,11 +82,12 @@ init::
 	ld  [MBC_ROM_BANK], a
 	ldh [IO_INTERRUPT_ENABLE], a
 
-	;cancel any pending interrupts and wait for next frame before starting
+	;cancel any pending interrupts before starting
 	xor a
 	ldh [IO_INTERRUPT_REQUEST], a
+	ld a, RELOAD_PALETTES | RELOAD_SCROLL
+	ldh [redraw_screen], a
 	ei
-	call waitFrame
 	jp MAIN
 
 SECTION "OAM_DMA_ROUTINE_ROM", ROM0
@@ -94,12 +102,3 @@ oam_function:
 		ret
 	ENDL
 .end:
-
-SECTION "VBLANK_WAIT", ROM0
-waitFrame::
-	ldh a, [redraw_screen]
-	or 0x80
-	ldh [redraw_screen], a
-	.loop:
-		halt
-	jr waitFrame.loop
