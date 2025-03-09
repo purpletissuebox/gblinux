@@ -82,7 +82,7 @@ VBLANK::
 			ld d, a
 			ldi a, [hl]
 			cp d
-				jr nc, .noGfxTasks
+				jr nc, .pauseGfxTasks
 			ldh [IO_DMA_TRIGGER], a
 			ld a, l
 			ld l, gfx_task_head
@@ -93,7 +93,10 @@ VBLANK::
 			ldd [hl], a
 			cp [hl]
 			inc hl
-		jr z, .gfx_loop			
+		jr z, .gfx_loop		
+		.pauseGfxTasks:
+		ld a, RELOAD_GFX_TASK
+		ldh [reload_screen], a
 	.noGfxTasks:
 	pop af
 	ldh [IO_WRAM_BANK], a
