@@ -75,3 +75,31 @@ MAIN::
 	call biosMain
 	halt
 	jr MAIN
+
+SECTION "RAMTEST", ROMX
+ramTest::
+  ld a, 0x0A
+  ld [0x0000], a
+  ld c, 0x22
+  ld b, 16  ;i = 16
+  .write_test:
+    ld a, b            ;load curr bank
+    ld [0x4000], a     ;Set SRAM bank 
+    ld a, c            ;Load dummy value
+    ld [0xA000], a     ;Load dummy value to mem 
+    dec b              ;i--
+    jr nz, .write_test ;while (i> 0)
+  ld b, 16             ;reload i = 16
+  .read_test:
+    ld a, b
+    ld [0x4000], a 
+    ld a, [0xA000]
+    cp c
+    jr nz, .ram_failure ;didn't get same value back
+    dec b 
+    jr nz, .read_test    ; i > 0 
+  .success:
+    ;do something. go to next step
+    ret
+  .ram_failure: 
+    ret
