@@ -31,6 +31,15 @@ SECTION FRAGMENT "GFX_VARS", WRAMX
 	.end::
 ENDSECTION
 
+SECTION FRAGMENT "GFX_VARS", WRAMX, ALIGN[6]
+	gfx_task_tail::
+		ds 1
+	gfx_task_head::
+		ds 1
+	gfx_task_queue::
+		ds 10*6
+ENDSECTION
+
 SECTION "HRAM", HRAM
 	rom_bank::
 		ds 0x01
