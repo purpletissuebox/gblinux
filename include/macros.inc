@@ -29,3 +29,18 @@ ENDM
 MACRO ldcoord
 ld \1, \2 + ((\4 << 5) | \3)
 ENDM
+
+MACRO printBCD
+REPT _NARG
+	ld a, \1
+	and 0xF0
+	swap a
+	add "0"
+	ldi [hl], a
+	ld a, \1
+	and 0x0F
+	add "0"
+	ldi [hl], a
+	shift
+ENDR
+ENDM
