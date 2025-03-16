@@ -80,27 +80,34 @@ MAIN::
 SECTION "RAMTEST", ROMX
 ramTest::
   ld a, 0x0A
-  ld [0x0000], a
-  ld c, 0x22
-  ld b, 16  ;i = 16
+  ld [MBC_RAM_ENABLE], a    ;Enable SRAM 
+  ld c, 0x22                ;dummy value for writing
+  ld d, 0x0F                ;i = 15, banks 0-15
+  ld b, 0x00                ;number of banks read successfully
+  ld a, b                   ;load first bank, loop will handle others
   .write_test:
-    ld a, b            ;load curr bank
-    ld [0x4000], a     ;Set SRAM bank 
-    ld a, c            ;Load dummy value
-    ld [0xA000], a     ;Load dummy value to mem 
-    dec b              ;i--
-    jr nz, .write_test ;while (i> 0)
-  ld b, 16             ;reload i = 16
+    ld [MBC_RAM_BANK], a    ;Set SRAM bank 
+    ld a, c                 ;Load dummy value
+    ld [0xA000], a          ;Load dummy value to mem
+    dec d                   ;i--
+    ld a, d                 ;prepare for next bank
+    cp 0xFF                 ;dec'd b past 0, done 
+    jr z, .write_done
+    jr .write_test          ;while (i> 0), go again when we hit 0 for the 0 bank below
+  .write_done:
+    ld d, 0x0F              ;reload i = 15
+    ld a, d                 ;load current bank, loop gets rest
   .read_test:
-    ld a, b
-    ld [0x4000], a 
-    ld a, [0xA000]
+    ld [MBC_RAM_BANK], a    ;set SRAM bank 
+    ld a, [0xA000]          ;Load memory value to a
     cp c
-    jr nz, .exit ;didn't get same value back
-    dec b 
-    jr nz, .read_test    ; i > 0 
+    jr nz, .read_failure    ;skip inc d as bank is not working, and keep chugging to dec b
+    inc b                   ;+1 working bank
+  .read_failure:            ; will run even if no failure, simply a label for jr above
+    dec d                   ;i--
+    ld a, d                 ;prepare for next bank
+    cp 0xFF
+    jr z, .exit             ;if we dec past 0, quit
+  jr .read_test             ;
   .exit:
-	ld a, 0x10
-	sub b
-	ld b, a ;b = number of banks successfully read
-    ret
+    ret                     ;b = number of banks successfully read
