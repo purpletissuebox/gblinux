@@ -48,12 +48,12 @@ ENDSECTION
 SECTION FRAGMENT "GFX_VARS", WRAMX
 	ds 0x40 - (@ & 0x3F)
 	align 6
+	gfx_task_queue::
+		ds 8*8 - 2
 	gfx_task_tail::
 		ds 1
 	gfx_task_head::
 		ds 1
-	gfx_task_queue::
-		ds 10*6
 ENDSECTION
 
 SECTION "HRAM", HRAM
