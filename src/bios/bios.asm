@@ -91,14 +91,20 @@ biosMain::
 ;outputs: bc = number (bcd)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 bcd11:
-	;the first 3 bits can NOT generate a half-carry, so just skip straight to the first 4 bits
+	;the "double dabble" routine shifts the number one place to the left every loop.
+	;then, for every nibble that is >= 5, it will add 3.
+	;this causes the nibbles to carry at 10 instead of 16, creating a decimal number.
+	;instead, we use the "daa" instruction which adds 6 when the nibble is >= 10, which accomplishes the same thing.
+	;we can optimize by only daa-ing when we know a carry is possible, which is at powers of 100	
+
+	;the first 4 bits can only generate one half-carry (0-15), so we don't need to double dabble them.
 	swap b
 	ld a, b
 	and 0x0F
 	or a
-	daa ;a = 0-15
+	daa ;a = 0-15 and b has 4 useful bits left. unfortunately the other 4 bits contain garbage that will stick around this entire process.
 	
-	;the next 2 bits can NOT generate a full carry, so keep the processing to 8 bits for speed
+	;the next 3 bits can only generate one full carry (0-127), so avoid 16-bit processing for now
 	ld c, 0x03
 	.loop127:
 		sla b
@@ -107,22 +113,22 @@ bcd11:
 		dec c
 	jr nz, .loop127
 	
-	;at this point, A contains the lower 2 digits, carry flag contains the 100s place if present.
-	rl b ;simultaneously store b = hundreds digit and carry = next bit to process
+	;at this point, A contains the lower 2 digits, carry flag contains the 100s place if present, b contains 1 useful bit
+	rl b ;simultaneously store b = hundreds digit and carry = next bit to process. right now register "BA" contains 0-127
 	adc a
 	daa
 	ld c, a
-	ld a, b ;bc = 0-127
+	ld a, b
 	adc a
-	daa
-	and 0x03
+	daa ;"AC" contains 0-255, except the top bits of A contain garbage from when we did "swap b" at the beginning
+	and 0x03 ;remove the garbage
 	ld b, a ;bc = 0-255
 	
-	;the last 3 iterations all use a zero bit. so no left shift is necessary
+	;the last 3 iterations now must be done with the full 16 bit processing as normal.
 	ld l, 0x03
 	.loop2040:
 		ld a, c
-		add a
+		add a ;normally we would left shift the buffer here, but the last 3 bits are always 0 (1 bank = 8K) so we can shift in the 0 ourselves
 		daa
 		ld c, a
 		ld a, b
