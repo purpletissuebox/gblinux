@@ -84,7 +84,7 @@ ramTest::
   ld c, 0x22                ;dummy value for writing
   ld d, 0x0F                ;i = 15, banks 0-15
   ld b, 0x00                ;number of banks read successfully
-  ld a, b                   ;load first bank, loop will handle others
+  ld a, d                   ;load first bank, loop will handle others
   .write_test:
     ld [MBC_RAM_BANK], a    ;Set SRAM bank 
     ld a, c                 ;Load dummy value
