@@ -1,4 +1,4 @@
-opcode_names:
+opcode_name_table:
 align 8
 ;00-0F
 	dw strings.add, strings.add, strings.add, strings.add, strings.add, strings.add, strings.push, strings.pop, strings.or, strings.or, strings.or, strings.or, strings.or, strings.or, strings.push, strings.pop
@@ -33,13 +33,13 @@ align 8
 ;F0-FF
 	dw strings.lock, strings.nul, strings.rept_nz, strings.rept_z, strings.halt, strings.cmc, strings.nul, strings.nul, strings.clc, strings.stc, strings.cli, strings.sti, strings.cld, strings.std, strings.nul, strings.nul
 
-grp1_names:
+grp1_name_table:
 	dw strings.test, strings.nul, strings.not, strings.neg, strings.mul, strings.imul, strings.div, strings.idiv
-grp2_names:
+grp2_name_table:
 	dw strings.inc, strings.dec, strings.call, strings.call, strings.jp, strings.jp, strings.push, strings.nul
-imm_names:
+imm_name_table:
 	dw strings.add, strings.or, strings.adc, strings.sbb, strings.and, strings.sub, strings.xor, strings.cmp
-shift_names:
+shift_name_table:
 	dw strings.rol, strings.ror, strings.rcl, strings.rcr, strings.shl, strings.shr, strings.nul, strings.sar
 
 strings:
