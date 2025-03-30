@@ -1,0 +1,49 @@
+INCLUDE "emu/macrocodes.inc"
+SECTION "OPCODE_HANDLER_C0", ROM0
+opcode_handler_C0:: ;N/A
+	db RETURN
+SECTION "OPCODE_HANDLER_C1", ROM0
+opcode_handler_C1:: ;N/A
+	db RETURN
+SECTION "OPCODE_HANDLER_C2", ROM0
+opcode_handler_C2:: ;N/A
+	db RETURN
+SECTION "OPCODE_HANDLER_C3", ROM0
+opcode_handler_C3:: ;N/A
+	db RETURN
+SECTION "OPCODE_HANDLER_C4", ROM0
+opcode_handler_C4:: ;N/A
+	db RETURN
+SECTION "OPCODE_HANDLER_C5", ROM0
+opcode_handler_C5:: ;N/A
+	db RETURN
+SECTION "OPCODE_HANDLER_C6", ROM0
+opcode_handler_C6:: ;N/A
+	db RETURN
+SECTION "OPCODE_HANDLER_C7", ROM0
+opcode_handler_C7:: ;N/A
+	db RETURN
+SECTION "OPCODE_HANDLER_C8", ROM0
+opcode_handler_C8:: ;N/A
+	db RETURN
+SECTION "OPCODE_HANDLER_C9", ROM0
+opcode_handler_C9:: ;N/A
+	db RETURN
+SECTION "OPCODE_HANDLER_CA", ROM0
+opcode_handler_CA:: ;N/A
+	db RETURN
+SECTION "OPCODE_HANDLER_CB", ROM0
+opcode_handler_CB:: ;N/A
+	db RETURN
+SECTION "OPCODE_HANDLER_CC", ROM0
+opcode_handler_CC:: ;N/A
+	db RETURN
+SECTION "OPCODE_HANDLER_CD", ROM0
+opcode_handler_CD:: ;N/A
+	db RETURN
+SECTION "OPCODE_HANDLER_CE", ROM0
+opcode_handler_CE:: ;N/A
+	db RETURN
+SECTION "OPCODE_HANDLER_CF", ROM0
+opcode_handler_CF:: ;N/A
+	db RETURN
