@@ -1,48 +1,99 @@
-SECTION "EMU_MACRO_40", ROM0
-emu_macro_40:: ;N/A
+SECTION "EMU_PRINT_REGS", ROM0
+emu_macro_42:: ;PRINTSEG
+	add 0x08
+emu_macro_41:: ;PRINTR16
+	add 0x08
+emu_macro_40:: ;PRINTR8
+	add a
+	add LOW(register_names)
+	ld l, a
+	adc HIGH(register_names)
+	sub l
+	ld h, a
+	ldi a, [hl]
+	ld [de], a
+	inc de
+	ldi a, [hl]
+	ld [de], a
+	inc de
 	ret
-SECTION "EMU_MACRO_41", ROM0
-emu_macro_41:: ;N/A
+
+emu_macro_43:: ;PRINTMEM
+	ld l, a
+	add a
+	add a
+	add l
+	add LOW(memory_names)
+	ld l, a
+	adc HIGH(memory_names)
+	ld h, a
+	REPT 5
+		ldi a, [hl]
+		ld [de], a
+		inc de
+	ENDR
 	ret
-SECTION "EMU_MACRO_42", ROM0
-emu_macro_42:: ;N/A
+	
+register_names:
+	db "ALCLDLBLAHCHDHBHAXCXDXBXSPBPSIDIESCSSSDS"
+memory_names:
+	db "BX+SIBX+DIBP+SIBP+DISI   DI   BP   BX   "
 	ret
-SECTION "EMU_MACRO_43", ROM0
+
+SECTION "EMU_PRINT_LITERAL", ROM0
 emu_macro_43:: ;N/A
-	ret
-SECTION "EMU_MACRO_44", ROM0
+	jp copy
+	db 0xFF
 emu_macro_44:: ;N/A
-	ret
-SECTION "EMU_MACRO_45", ROM0
+	jp copy
+	db 0xFF
 emu_macro_45:: ;N/A
-	ret
-SECTION "EMU_MACRO_46", ROM0
+	jp copy
+	db 0xFF
 emu_macro_46:: ;N/A
-	ret
-SECTION "EMU_MACRO_47", ROM0
+	jp copy
+	db 0xFF
 emu_macro_47:: ;N/A
-	ret
-SECTION "EMU_MACRO_48", ROM0
+	jp copy
+	db 0xFF
 emu_macro_48:: ;N/A
-	ret
-SECTION "EMU_MACRO_49", ROM0
+	jp copy
+	db 0xFF
 emu_macro_49:: ;N/A
-	ret
-SECTION "EMU_MACRO_4A", ROM0
+	jp copy
+	db 0xFF
 emu_macro_4A:: ;N/A
-	ret
-SECTION "EMU_MACRO_4B", ROM0
+	jp copy
+	db 0xFF
 emu_macro_4B:: ;N/A
-	ret
-SECTION "EMU_MACRO_4C", ROM0
+	jp copy
+	db 0xFF
 emu_macro_4C:: ;N/A
-	ret
-SECTION "EMU_MACRO_4D", ROM0
+	jp copy
+	db 0xFF
 emu_macro_4D:: ;N/A
-	ret
-SECTION "EMU_MACRO_4E", ROM0
+	jp copy
+	db 0xFF
 emu_macro_4E:: ;N/A
-	ret
-SECTION "EMU_MACRO_4F", ROM0
+	jp copy
+	db 0xFF
 emu_macro_4F:: ;N/A
+	jp copy
+	db 0xFF
+copy:
+	ld a, l
+	sub (LOW(emu_macro_43)-4)
+	push bc
+	ld c, a
+	add sp, 4
+	pop hl
+	.loop:
+		ldi a, [hl]
+		ld [de], a
+		inc de
+		dec c
+	jr nc, .loop
+	push hl
+	add sp, -4
+	pop bc
 	ret
