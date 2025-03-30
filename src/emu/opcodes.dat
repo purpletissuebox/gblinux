@@ -1,0 +1,235 @@
+opcode_names:
+align 8
+;00-0F
+	dw strings.add, strings.add, strings.add, strings.add, strings.add, strings.add, strings.push, strings.pop, strings.or, strings.or, strings.or, strings.or, strings.or, strings.or, strings.push, strings.pop
+;10-1F
+	dw strings.adc, strings.adc, strings.adc, strings.adc, strings.adc, strings.adc, strings.push, strings.pop, strings.sbb, strings.sbb, strings.sbb, strings.sbb, strings.sbb, strings.sbb, strings.push, strings.pop
+;20-2F
+	dw strings.and, strings.and, strings.and, strings.and, strings.and, strings.and, strings.nul, strings.daa, strings.sub, strings.sub, strings.sub, strings.sub, strings.sub, strings.sub, strings.nul, strings.das
+;30-3F
+	dw strings.xor, strings.xor, strings.xor, strings.xor, strings.xor, strings.xor, strings.nul, strings.aaa, strings.cmp, strings.cmp, strings.cmp, strings.cmp, strings.cmp, strings.cmp, strings.nul, strings.aas
+;40-4F
+	dw strings.inc, strings.inc, strings.inc, strings.inc, strings.inc, strings.inc, strings.inc, strings.inc, strings.dec, strings.dec, strings.dec, strings.dec, strings.dec, strings.dec, strings.dec, strings.dec
+;50-5F
+	dw strings.push, strings.push, strings.push, strings.push, strings.push, strings.push, strings.push, strings.push, strings.pop, strings.pop, strings.pop, strings.pop, strings.pop, strings.pop, strings.pop, strings.pop
+;60-6F
+	dw strings.nul, strings.nul, strings.nul, strings.nul, strings.nul, strings.nul, strings.nul, strings.nul, strings.nul, strings.nul, strings.nul, strings.nul, strings.nul, strings.nul, strings.nul, strings.nul
+;70-7F
+	dw strings.jo, strings.jno, strings.jb, strings.jnb, strings.je, strings.jne, strings.jbe, strings.ja, strings.js, strings.jns, strings.jpe, strings.jpo, strings.jl, strings.jge, strings.jle, strings.jg
+;80-8F
+	dw strings.nul, strings.nul, strings.nul, strings.nul, strings.test, strings.test, strings.xchg, strings.mov, strings.mov, strings.mov, strings.mov, strings.mov, strings.lea, strings.mov, strings.pop
+;90-9F
+	dw strings.nop, strings.xchg, strings.xchg, strings.xchg, strings.xchg, strings.xchg, strings.xchg, strings.xchg, strings.cbw, strings.cwd, strings.call, strings.wait, strings.push, strings.pop, strings.sahf, strings.lahf
+;A0-AF
+	dw strings.mov, strings.mov, strings.mov, strings.mov, strings.movsb, strings.movsw, strings.cmpsb, strings.cmpsw, strings.test, strings.test, strings.stosb, strings.stosw, strings.lodsb, strings.lodsw, strings.scasb, strings.scasw,
+;B0-BF
+	dw strings.mov, strings.mov, strings.mov, strings.mov, strings.mov, strings.mov, strings.mov, strings.mov, strings.mov, strings.mov, strings.mov, strings.mov, strings.mov, strings.mov, strings.mov, strings.mov
+;C0-CF
+	dw strings.nul, strings.nul, strings.ret, strings.ret, strings.les, strings.lds, strings.mov, strings.mov, strings.nul, strings.nul, strings.ret, strings.ret, strings.int, strings.int, strings.into, strings.iret
+;D0-DF
+	dw strings.nul, strings.nul, strings.nul, strings.nul, strings.aam, strings.aad, strings.nul, strings.xlat, strings.esc, strings.esc, strings.esc, strings.esc, strings.esc, strings.esc, strings.esc, strings.esc
+;E0-EF
+	dw strings.loopnz, strings.loopz, strings.loop, strings.jcxz, strings.in, strings.in, strings.out, strings.out, strings.call, strings.jp, strings.jp, strings.jp, strings.in, strings.in, strings.out, strings.out
+;F0-FF
+	dw strings.lock, strings.nul, strings.rept_nz, strings.rept_z, strings.halt, strings.cmc, strings.nul, strings.nul, strings.clc, strings.stc, strings.cli, strings.sti, strings.cld, strings.std, strings.nul, strings.nul
+
+grp1_names:
+	dw strings.test, strings.nul, strings.not, strings.neg, strings.mul, strings.imul, strings.div, strings.idiv
+grp2_names:
+	dw strings.inc, strings.dec, strings.call, strings.call, strings.jp, strings.jp, strings.push, strings.nul
+imm_names:
+	dw strings.add, strings.or, strings.adc, strings.sbb, strings.and, strings.sub, strings.xor, strings.cmp
+shift_names:
+	dw strings.rol, strings.ror, strings.rcl, strings.rcr, strings.shl, strings.shr, strings.nul, strings.sar
+
+strings:
+.nul:
+	db 0
+.add:
+	db "ADD ", 0
+.or:
+	db "OR ", 0
+.adc:
+	db "ADC ", 0
+.sbb:
+	db "SBB ", 0
+.and:
+	db "AND ", 0
+.sub:
+	db "SUB ", 0
+.xor:
+	db "XOR ", 0
+.cmp:
+	db "CMP ", 0
+.push:
+	db "PUSH ", 0
+.pop:
+	db "POP ", 0
+.daa:
+	db "DAA ", 0
+.das:
+	db "DAS ", 0
+.aaa:
+	db "AAA ", 0
+.aas:
+	db "AAS ", 0
+.inc:
+	db "INC ", 0
+.dec:
+	db "DEC ", 0
+.jo:
+	db "J.o ", 0
+.jno:
+	db "J.no ", 0
+.jb:
+	db "J.c ", 0
+.jnb:
+	db "J.nc ", 0
+.je:
+	db "J.z ", 0
+.jne:
+	db "J.nz ", 0
+.jbe:
+	db "J.leu ", 0
+.ja:
+	db "J.gtu ", 0
+.js:
+	db "J.s ", 0
+.jns:
+	db "J.ns ", 0
+.jpe:
+	db "J.p ", 0
+.jpo:
+	db "J.np ", 0
+.jl:
+	db "J.s!o ", 0
+.jge:
+	db "J.s=o ", 0
+.jle:
+	db "J.les ", 0
+.jg:
+	db "J.gts ", 0
+.test:
+	db "TEST ", 0
+.xchg:
+	db "XCHG ", 0
+.mov:
+	db "MOV ", 0
+.lea:
+	db "LEA ", 0
+.nop:
+	db "NOP ", 0
+.cbw:
+	db "SEX ", 0
+.cwd:
+	db "SEX ", 0
+.call:
+	db "CALL ", 0
+.wait:
+	db "WAIT ", 0
+.sahf:
+	db "SAHF ", 0
+.lahf:
+	db "LAHF ", 0
+.movsb:
+	db "MOVSB ", 0
+.movsw:
+	db "MOVSW ", 0
+.cmpsb:
+	db "CMPSB ", 0
+.cmpsw:
+	db "CMPSW ", 0
+.stosb:
+	db "STOSB ", 0
+.stosw:
+	db "STOSW ", 0
+.lodsb:
+	db "LODSB ", 0
+.lodsw:
+	db "LODSW ", 0
+.scasb:
+	db "SCASB ", 0
+.scasw:
+	db "SCASW ", 0
+.ret:
+	db "RET ", 0
+.les:
+	db "LES ", 0
+.lds:
+	db "LDS ", 0
+.int:
+	db "INT ", 0
+.into:
+	db "INT.o ", 0
+.iret:
+	db "RETI ", 0
+.aam:
+	db "AAM ", 0
+.aad:
+	db "AAD ", 0
+.xlat:
+	db "XLAT ", 0
+.esc:
+	db "ESC ", 0
+.loopnz:
+	db "LOOP.nz ", 0
+.loopz:
+	db "LOOP.z ", 0
+.loop:
+	db "LOOP ", 0
+.jcxz:
+	db "J.CXz ", 0
+.in:
+	db "IN ", 0
+.out:
+	db "OUT ", 0
+.jp:
+	db "J ", 0
+.lock:
+	db "LOCK ", 0
+.rept_nz:
+	db "REP.nz ", 0
+.rept_z:
+	db "REP.z ", 0
+.halt:
+	db "HALT ", 0
+.cmc:
+	db "CCF ", 0
+.clc:
+	db "CLC ", 0
+.stc:
+	db "SCF ", 0
+.cli:
+	db "DI ", 0
+.sti:
+	db "EI ", 0
+.cld:
+	db "CDF ", 0
+.std:
+	db "SDF ", 0
+.not:
+	db "NOT ", 0
+.neg:
+	db "NEG ", 0
+.mul:
+	db "MULT ", 0
+.imul:
+	db "IMUL ", 0
+.div:
+	db "DIV ", 0
+.idiv:
+	db "IDIV ", 0
+.rol:
+	db "ROL ", 0
+.ror:
+	db "ROR ", 0
+.rcl:
+	db "RCL ", 0
+.rcr:
+	db "RCR ", 0
+.shl:
+	db "SLL ", 0
+.shr:
+	db "SRL ", 0
+.sar:
+	db "SRA ", 0
