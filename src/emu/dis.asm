@@ -62,9 +62,7 @@ disOneInstruction:
 	ldi a, [hl]
 	ld h, [hl]
 	ld l, a
-	call runInstructionMacros
-	pop bc
-	ret
+	jp runInstructionMacros
 
 print_op:
 	add a
