@@ -42,7 +42,7 @@ opcode_handler_57:: ;PUSH DI
 opcode_handler_5F:: ;POP DI
 	ld a, l
 	sub LOW(opcode_handler_40)
-	jp printR1_16_a
+	jp printReg16
 
 SECTION "UNUSED", ROM0
 opcode_handler_60:: ;UNUSED
@@ -99,5 +99,4 @@ opcode_handler_7D:: ;JGE
 opcode_handler_7E:: ;JLE
 opcode_handler_7F:: ;JG
 	printl "@+"
-	call printImm8_bc
-	jp incbc
+	jp printImm8_bc

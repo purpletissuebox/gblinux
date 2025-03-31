@@ -14,8 +14,7 @@ opcode_handler_38:: ;CMP.b r/m, reg
 	call printR2_8_bc
 	printl ", "
 	pop af
-	call printR1_8_a
-	jp incbc
+	jp printR1_8_a
 
 SECTION "ALU_W_RM_REG", ROM0
 opcode_handler_01:: ;ADD.w r/m, reg
@@ -31,8 +30,7 @@ opcode_handler_39:: ;CMP.w r/m, reg
 	call printR2_16_bc
 	printl ", "
 	pop af
-	call printR1_16_a
-	jp incbc
+	jp printR1_16_a
 
 SECTION "ALU_B_REG_RM", ROM0
 opcode_handler_02:: ;ADD.b reg, r/m
@@ -45,8 +43,7 @@ opcode_handler_32:: ;XOR.b reg, r/m
 opcode_handler_3A:: ;CMP.b reg, r/m
 	call printR1_8_bc
 	printl ", "
-	call printR2_8_bc
-	jp incbc
+	jp printR2_8_bc
 
 SECTION "ALU_W_REG_RM", ROM0
 opcode_handler_03:: ;ADD.w reg, r/m
@@ -59,8 +56,7 @@ opcode_handler_33:: ;XOR.w reg, r/m
 opcode_handler_3B:: ;CMP.w reg, r/m
 	call printR1_16_bc
 	printl ", "
-	call printR2_16_bc
-	jp incbc
+	jp printR2_16_bc
 
 SECTION "ALU_B_ACC_IMM", ROM0
 opcode_handler_04:: ;ADD.b AL, imm
@@ -72,8 +68,7 @@ opcode_handler_2C:: ;SUB.b AL, imm
 opcode_handler_34:: ;XOR.b AL, imm
 opcode_handler_3C:: ;CMP.b AL, imm
 	printl "AL, "
-	call printImm8_bc
-	jp incbc
+	jp printImm8_bc
 
 SECTION "ALU_W_ACC_IMM", ROM0
 opcode_handler_05:: ;ADD.w AX, imm
@@ -85,8 +80,7 @@ opcode_handler_2D:: ;SUB.w AX, imm
 opcode_handler_35:: ;XOR.w AX, imm
 opcode_handler_3D:: ;CMP.w AX, imm
 	printl "AX, "
-	call printImm16_bc
-	jp incbc
+	jp printImm16_bc
 
 SECTION "SEGMENT_STACK", ROM0
 opcode_handler_06:: ;PUSH ES
