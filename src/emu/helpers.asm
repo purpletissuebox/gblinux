@@ -24,6 +24,7 @@ printR2_8_bc::
 	and 0x07
 	ld h, a
 	ld a, [bc]
+	call incbc
 	
 	add a
 	jr c, .mode23
@@ -53,6 +54,7 @@ printR2_16_bc::
 	and 0x07
 	ld h, a
 	ld a, [bc]
+	call incbc
 	
 	add a
 	jr c, .mode23
@@ -131,6 +133,7 @@ printMem:
 
 printImm8_bc::
 	ld a, [bc]
+	call incbc
 printImm8_a::
 	ld l, a
 	and 0xF0
@@ -172,7 +175,9 @@ incbc::
 	inc a
 	ldh [rom_bank], a
 	ld [MBC_ROM_BANK], a
+	pop af
 	ld b, 0x40
+	ret
 
 register_names:
 	db "ALCLDLBLAHCHDHBHAXCXDXBXSPBPSIDIESCSSSDS"
