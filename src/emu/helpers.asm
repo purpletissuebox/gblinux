@@ -2,17 +2,23 @@ INCLUDE "macros.inc"
 INCLUDE "hwregs.inc"
 
 SECTION "DIS_HELPERS", ROM0
-printR1_8::
+printR1_8_bc::
 	ld a, [bc]
-	call getR1
+printR1_8_a::
+	swap a
+	rlca
+	and 0x07
 	jp printReg8
 
-printR1_16::
+printR1_16_bc::
 	ld a, [bc]
-	call getR1
+printR1_16_a::
+	swap a
+	rlca
+	and 0x07
 	jp printReg16
 
-printR2_8::
+printR2_8_bc::
 	printl "["
 	ld a, [bc]
 	and 0x07
@@ -22,25 +28,26 @@ printR2_8::
 	add a
 	jr c, .mode23
 		add a
+		ld a, h
 		jr c, .mode1
-		call printR2_mode0
-		jr .done
-	.mode1:
-		call printR2_mode1
-		jr .done
+			call printR2_mode0
+			jr .done
+		.mode1:
+			call printR2_mode1
+			jr .done
 	.mode23:
 		add a
-		jr c, .mode3
-		call printR2_mode2
-		jr .done
-	.mode3:
-		dec de
-		call printR1_8
+		ld a, h
+		jr nc, .mode2
+			dec de
+			jp printR1_8_a
+	.mode2:
+			call printR2_mode2
 	.done:
 	printl "]"
 	ret
 
-printR2_16::
+printR2_16_bc::
 	printl "["
 	ld a, [bc]
 	and 0x07
@@ -50,20 +57,21 @@ printR2_16::
 	add a
 	jr c, .mode23
 		add a
+		ld a, h
 		jr c, .mode1
-		call printR2_mode0
-		jr .done
-	.mode1:
-		call printR2_mode1
-		jr .done
+			call printR2_mode0
+			jr .done
+		.mode1:
+			call printR2_mode1
+			jr .done
 	.mode23:
 		add a
-		jr c, .mode3
-		call printR2_mode2
-		jr .done
-	.mode3:
-		dec de
-		call printR1_8
+		ld a, h
+		jr nc, .mode2
+			dec de
+			jp printR1_8_a
+		.mode2:
+			call printR2_mode2
 	.done:
 	printl "]"
 	ret
@@ -71,19 +79,19 @@ printR2_16::
 printR2_mode0:
 	cp 0x06
 	jp nz, printMem
-	jp printImm16
+	jp printImm16_bc
 
 printR2_mode1:
 	call printMem
 	call incbc
 	printl "+"
-	jp printImm8
+	jp printImm8_bc
 
 printR2_mode2:
 	call printMem
 	call incbc
 	printl "+"
-	jp printImm16
+	jp printImm16_bc
 
 printSegment::
 	add 8
@@ -121,7 +129,9 @@ printMem:
 	ENDR
 	ret
 
-printImm8::
+printImm8_bc::
+	ld a, [bc]
+printImm8_a::
 	ld l, a
 	and 0xF0
 	swap a
@@ -143,14 +153,13 @@ printImm8::
 	inc de
 	ret
 
-printImm16::
+printImm16_bc::
 	ld a, [bc]
 	ld h, a
 	call incbc
-	ld a, [bc]
-	call printImm8
+	call printImm8_bc
 	ld a, h
-	jp printImm8
+	jp printImm8_a
 	
 incbc::
 	inc c
@@ -164,13 +173,6 @@ incbc::
 	ldh [rom_bank], a
 	ld [MBC_ROM_BANK], a
 	ld b, 0x40
-
-getR1:
-	ld a, [bc]
-	swap a
-	rlca
-	and 0x07
-	ret
 
 register_names:
 	db "ALCLDLBLAHCHDHBHAXCXDXBXSPBPSIDIESCSSSDS"
