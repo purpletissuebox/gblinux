@@ -42,7 +42,7 @@ opcode_handler_57:: ;PUSH DI
 opcode_handler_5F:: ;POP DI
 	ld a, l
 	sub LOW(opcode_handler_40)
-	jp printR1_16
+	jp printR1_16_a
 
 SECTION "UNUSED", ROM0
 opcode_handler_60:: ;UNUSED
@@ -78,8 +78,8 @@ opcode_handler_6E:: ;UNUSED
 opcode_handler_6F:: ;UNUSED
 	printl "db "
 	ld a, l
-	sub LOW(opcode_handler_60)
-	jp printImm8
+	sub (LOW(opcode_handler_60) - 0x60)
+	jp printImm8_a
 
 SECTION "JUMPS", ROM0
 opcode_handler_70:: ;JO
@@ -99,6 +99,5 @@ opcode_handler_7D:: ;JGE
 opcode_handler_7E:: ;JLE
 opcode_handler_7F:: ;JG
 	printl "@+"
-	ld a, [bc]
-	call printImm8
+	call printImm8_bc
 	jp incbc

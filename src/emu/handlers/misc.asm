@@ -11,46 +11,56 @@ SECTION "ATOMIC_OPS_B", ROM0
 opcode_handler_84:: ;TEST.b reg, r/m
 opcode_handler_86:: ;XCHG.b reg, r/m
 opcode_handler_8A:: ; MOV.b reg, r/m
-	call printR1_8
+	call printR1_8_bc
 	printl ", "
-	call printR2_8
-	call incbc
+	call printR2_8_bc
+	jp incbc
 
 SECTION "ATOMIC_OPS_W", ROM0
 opcode_handler_85:: ;TEST.w reg, r/m
 opcode_handler_87:: ;XCHG.w reg, r/m
 opcode_handler_8B:: ; MOV.w reg, r/m
 opcode_handler_8D:: ; LEA.w reg, r/m
-	call printR1_16
+	call printR1_16_bc
 	printl ", "
-	call printR2_16
+	call printR2_16_bc
 	jp incbc
 
 SECTION "EXTRA_MOVS", ROM0
 opcode_handler_88:: ;MOV.b r/m, reg
-	call printR2_8
+	ld a, [bc]
+	push af
+	call printR2_8_bc
 	printl ", "
-	call printR1_8
+	pop af
+	call printR1_8_a
 	jp incbc
 opcode_handler_89:: ;MOV.w r/m, reg
-	call printR2_16
+	ld a, [bc]
+	push af
+	call printR2_16_bc
 	printl ", "
-	call printR1_16
+	pop af
+	call printR1_16_a
 	jp incbc
 
 SECTION "SEGMENT_TO_MEMORY", ROM0
 opcode_handler_8C:: ;MOV.w r/m, seg
-	call printR2_16
+	ld a, [bc]
+	push af
+	call printR2_16_bc
 	printl ", "
+	pop af
 	jp printSegment
 opcode_handler_8E:: ;MOV.w seg, r/m
+	ld a, [bc]
 	call printSegment
 	printl ", "
-	jp printR2_16
+	jp printR2_16_bc
 
 SECTION "EXTRA_POP", ROM0
 opcode_handler_8F:: ;POP r/m
-	jp printR2_16
+	jp printR2_16_bc
 
 SECTION "EXCHANGE_AX", ROM0
 opcode_handler_90:: ;XCHG , AX
