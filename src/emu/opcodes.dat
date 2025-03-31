@@ -17,7 +17,7 @@ align 8
 ;70-7F
 	dw strings.jo, strings.jno, strings.jb, strings.jnb, strings.je, strings.jne, strings.jbe, strings.ja, strings.js, strings.jns, strings.jpe, strings.jpo, strings.jl, strings.jge, strings.jle, strings.jg
 ;80-8F
-	dw strings.nul, strings.nul, strings.nul, strings.nul, strings.test, strings.test, strings.xchg, strings.mov, strings.mov, strings.mov, strings.mov, strings.mov, strings.lea, strings.mov, strings.pop
+	dw strings.nul, strings.nul, strings.nul, strings.nul, strings.test, strings.test, strings.xchg, strings.xchg, strings.mov, strings.mov, strings.mov, strings.mov, strings.mov, strings.lea, strings.mov, strings.pop
 ;90-9F
 	dw strings.nop, strings.xchg, strings.xchg, strings.xchg, strings.xchg, strings.xchg, strings.xchg, strings.xchg, strings.cbw, strings.cwd, strings.call, strings.wait, strings.push, strings.pop, strings.sahf, strings.lahf
 ;A0-AF
