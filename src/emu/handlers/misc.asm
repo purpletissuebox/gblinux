@@ -1,153 +1,71 @@
 INCLUDE "macros.inc"
 
-SECTION "IMM_GROUP", ROM0
-opcode_handler_80:: ;INC AX
-opcode_handler_81:: ;DEC AX
-opcode_handler_82:: ;PUSH AX
-opcode_handler_83:: ;POP AX
+SECTION "UNUSED_2", ROM0
+opcode_handler_C0:: ;UNUSED
+	ld a, l
+opcode_handler_C1:: ;UNUSED
+	printl "db "
+	ld a, l
+	sub (LOW(opcode_handler_C0) - 0xC0)
+	jp printImm8_a
+opcode_handler_C8:: ;UNUSED
+	ld a, l
+opcode_handler_C9:: ;UNUSED
+	printl "db "
+	ld a, l
+	sub (LOW(opcode_handler_C8) - 0xC0)
+	jp printImm8_a
+opcode_handler_D6:: ;UNUSED
+	printl "db D6"
+opcode_handler_F1:: ;UNUSED
+	printl "db F0"
 	ret
 
-SECTION "ATOMIC_OPS_B", ROM0
-opcode_handler_84:: ;TEST.b reg, r/m
-opcode_handler_86:: ;XCHG.b reg, r/m
-opcode_handler_8A:: ; MOV.b reg, r/m
-	call printR1_8_bc
-	printl ", "
-	call printR2_8_bc
-	jp incbc
-
-SECTION "ATOMIC_OPS_W", ROM0
-opcode_handler_85:: ;TEST.w reg, r/m
-opcode_handler_87:: ;XCHG.w reg, r/m
-opcode_handler_8B:: ; MOV.w reg, r/m
-opcode_handler_8D:: ; LEA.w reg, r/m
-	call printR1_16_bc
-	printl ", "
-	call printR2_16_bc
-	jp incbc
-
-SECTION "EXTRA_MOVS", ROM0
-opcode_handler_88:: ;MOV.b r/m, reg
-	ld a, [bc]
-	push af
-	call printR2_8_bc
-	printl ", "
-	pop af
-	call printR1_8_a
-	jp incbc
-opcode_handler_89:: ;MOV.w r/m, reg
-	ld a, [bc]
-	push af
-	call printR2_16_bc
-	printl ", "
-	pop af
-	call printR1_16_a
-	jp incbc
-
-SECTION "SEGMENT_TO_MEMORY", ROM0
-opcode_handler_8C:: ;MOV.w r/m, seg
-	ld a, [bc]
-	push af
-	call printR2_16_bc
-	printl ", "
-	pop af
-	jp printSegment
-opcode_handler_8E:: ;MOV.w seg, r/m
-	ld a, [bc]
-	call printSegment
-	printl ", "
-	jp printR2_16_bc
-
-SECTION "EXTRA_POP", ROM0
-opcode_handler_8F:: ;POP r/m
-	jp printR2_16_bc
-
-SECTION "EXCHANGE_AX", ROM0
-opcode_handler_90:: ;XCHG , AX
+SECTION "MISC", ROM0
+opcode_handler_C2:: ;RET imm
+opcode_handler_CA:: ;RET.f imm
+	jp printImm16_bc
+opcode_handler_C3:: ;RET
+opcode_handler_CB:: ;RET.f
+opcode_handler_CF:: ;RETI
+opcode_handler_D4:: ;AAM
+opcode_handler_D5:: ;AAD
+opcode_handler_D7:: ;XLATB
 	ret
-opcode_handler_91:: ;XCHG , AX
-	ld a, l
-opcode_handler_92:: ;XCHG , AX
-	ld a, l
-opcode_handler_93:: ;XCHG , AX
-	ld a, l
-opcode_handler_94:: ;XCHG , AX
-	ld a, l
-opcode_handler_95:: ;XCHG , AX
-	ld a, l
-opcode_handler_96:: ;XCHG , AX
-	ld a, l
-opcode_handler_97:: ;XCHG , AX
-	ld a, l
-	sub LOW(opcode_handler_90)
-	call printReg16
-	printl ", AX"
 
-SECTION "NOT_DONE", ROM0
-opcode_handler_98:: ;
-opcode_handler_99:: ;
-opcode_handler_9A:: ;
-opcode_handler_9B:: ;
-opcode_handler_9C:: ;
-opcode_handler_9D:: ;
-opcode_handler_9E:: ;
-opcode_handler_9F:: ;
-opcode_handler_A0:: ;
-opcode_handler_A1:: ;
-opcode_handler_A2:: ;
-opcode_handler_A3:: ;
-opcode_handler_A4:: ;
-opcode_handler_A5:: ;
-opcode_handler_A6:: ;
-opcode_handler_A7:: ;
-opcode_handler_A8:: ;
-opcode_handler_A9:: ;
-opcode_handler_AA:: ;
-opcode_handler_AB:: ;
-opcode_handler_AC:: ;
-opcode_handler_AD:: ;
-opcode_handler_AE:: ;
-opcode_handler_AF:: ;
-opcode_handler_B0:: ;
-opcode_handler_B1:: ;
-opcode_handler_B2:: ;
-opcode_handler_B3:: ;
-opcode_handler_B4:: ;
-opcode_handler_B5:: ;
-opcode_handler_B6:: ;
-opcode_handler_B7:: ;
-opcode_handler_B8:: ;
-opcode_handler_B9:: ;
-opcode_handler_BA:: ;
-opcode_handler_BB:: ;
-opcode_handler_BC:: ;
-opcode_handler_BD:: ;
-opcode_handler_BE:: ;
-opcode_handler_BF:: ;
-opcode_handler_C0:: ;
-opcode_handler_C1:: ;
-opcode_handler_C2:: ;
-opcode_handler_C3:: ;
-opcode_handler_C4:: ;
-opcode_handler_C5:: ;
-opcode_handler_C6:: ;
-opcode_handler_C7:: ;
-opcode_handler_C8:: ;
-opcode_handler_C9:: ;
-opcode_handler_CA:: ;
-opcode_handler_CB:: ;
-opcode_handler_CC:: ;
-opcode_handler_CD:: ;
-opcode_handler_CE:: ;
-opcode_handler_CF:: ;
-opcode_handler_D0:: ;
-opcode_handler_D1:: ;
-opcode_handler_D2:: ;
-opcode_handler_D3:: ;
-opcode_handler_D4:: ;
-opcode_handler_D5:: ;
-opcode_handler_D6:: ;
-opcode_handler_D7:: ;
+SECTION "DOUBLEWORD_LOADS", ROM0
+opcode_handler_C4:: ;LES
+opcode_handler_C5:: ;LDS
+	printl "AX, "
+	jp printR2_16_bc
+
+SECTION "MOV_IMM_MEM", ROM0
+opcode_handler_C6:: ;MOV.b r/m, imm
+	call printR2_8_bc
+	printl ", "
+	jp printImm8_bc
+opcode_handler_C7:: ;MOV.w r/m, imm
+	call printR2_16_bc
+	printl ", "
+	jp printImm16_bc
+
+SECTION "INTERRUPTS", ROM0
+opcode_handler_CC:: ;INT 3
+	printl "3"
+	ret
+opcode_handler_CD:: ;INT imm
+	jp printImm8_bc
+opcode_handler_CE:: ;INT.o 4
+	printl "4"
+	ret
+
+SECTION "SHIFT", ROM0
+opcode_handler_D0:: ;SHIFT.b r/m, 1
+opcode_handler_D1:: ;SHIFT.w r/m, 1
+opcode_handler_D2:: ;SHIFT.b r/m, CX
+opcode_handler_D3:: ;SHIFT.w r/m, CX
+	ret
+
 opcode_handler_D8:: ;
 opcode_handler_D9:: ;
 opcode_handler_DA:: ;
@@ -173,7 +91,6 @@ opcode_handler_ED:: ;
 opcode_handler_EE:: ;
 opcode_handler_EF:: ;
 opcode_handler_F0:: ;
-opcode_handler_F1:: ;
 opcode_handler_F2:: ;
 opcode_handler_F3:: ;
 opcode_handler_F4:: ;
