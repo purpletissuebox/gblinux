@@ -44,3 +44,12 @@ REPT _NARG
 	shift
 ENDR
 ENDM
+
+MACRO printl
+	DEF I = 0
+	REPT STRLEN(\1)
+		ld a, STRSUB(\1, I+1, 1)
+		ld [de], a
+		inc de
+	ENDR
+ENDM
