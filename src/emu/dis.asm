@@ -47,11 +47,11 @@ getMapTL:
 	ld d, a
 	ret
 
-disOneInstruction:
+disOneInstruction::
 	ld a, [bc]
 	call print_op
 	ld a, [bc]
-	inc bc
+	call incbc
 	
 	add a
 	ld l, a
@@ -62,7 +62,7 @@ disOneInstruction:
 	ldi a, [hl]
 	ld h, [hl]
 	ld l, a
-	jp runInstructionMacros
+	jp hl
 
 print_op:
 	add a
@@ -82,34 +82,11 @@ print_op:
 	jr .loop
 	ret
 
-runInstructionMacros:
-		ldi a, [hl]
-		push hl
-		add a
-		ld l, a
-		adc HIGH(macro_jump_table)
-		sub l
-		ld h, a
-		ldi a, [hl]
-		ld h, [hl]
-		ld l, a
-		rst callHL
-		pop hl
-	jr runInstructionMacros
-
 opcode_handler_table:
 	align 8
 	DEF I = 0
 	REPT 256
 		dw opcode_handler_{02X:I}
-		DEF I = I+1
-	ENDR
-
-macro_jump_table:
-	align 8
-	DEF I = 0
-	REPT 256
-		dw emu_macro_{02X:I}
 		DEF I = I+1
 	ENDR
 
