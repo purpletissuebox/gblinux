@@ -51,5 +51,6 @@ MACRO printl
 		ld a, STRSUB(\1, I+1, 1)
 		ld [de], a
 		inc de
+		DEF I = I+1
 	ENDR
 ENDM
