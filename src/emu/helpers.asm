@@ -85,13 +85,11 @@ printR2_mode0:
 
 printR2_mode1:
 	call printMem
-	call incbc
 	printl "+"
 	jp printImm8_bc
 
 printR2_mode2:
 	call printMem
-	call incbc
 	printl "+"
 	jp printImm16_bc
 
