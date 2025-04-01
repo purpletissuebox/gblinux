@@ -78,6 +78,7 @@ opcode_handler_97:: ;XCHG , AX
 	sub LOW(opcode_handler_90)
 	call printReg16
 	printl ", AX"
+	ret
 
 SECTION "SIGN_EXTEND", ROM0
 opcode_handler_98:: ;CBW AL, AH
