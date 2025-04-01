@@ -1,5 +1,6 @@
 INCLUDE "macros.inc"
 INCLUDE "hwregs.inc"
+INCLUDE "common/vblank.inc"
 
 SECTION "8086TEST", ROMX
 test8086:
@@ -14,23 +15,58 @@ SECTION "8086DIS", ROM0
 dis::
 	ld a, BANK(test8086)
 	ld [MBC_ROM_BANK], a
-	ld bc, test8086
 	swapRamBank shadow_bkg_map
+	ld bc, test8086
+	call disFullScreen
 	
+	xor a
+	ldh [scratch], a
+	.loop:
+		halt
+		call joypad
+	jr z, .loop
+		call disOneInstruction
+		ld a, [shadow_scroll_y]
+		add 8
+		ld [shadow_scroll_y], a
+		
+		ldh a, [redraw_screen]
+		or RELOAD_SCROLL
+		ldh [redraw_screen], a
+	jr .loop
+	restoreRamBank
+	ret
+
+joypad:
+	ldh a, [scratch]
+	ld l, a
+	
+	ld a, JOYPAD_SEL_DPAD
+	ldh [IO_JOYPAD], a
+	
+	ldh a, [IO_JOYPAD]
+	cpl
+	and JOYPAD_D
+	ldh [scratch], a
+	ld h, a
+	
+	ld a, l
+	cpl
+	and h
+	
+	ld a, JOYPAD_SEL_NONE
+	ldh [IO_JOYPAD], a
+	ret
+
+disFullScreen:
 	call getMapTL
 	ld a, 18
 	.print:
 		ldh [scratch], a
 		call disOneInstruction
-		ld a, e
-		or 0x1F
-		ld e, a
-		inc de
-		res 2, d
 		ldh a, [scratch]
 		dec a
 	jr nz, .print
-	restoreRamBank
 	ret
 
 getMapTL:
@@ -62,7 +98,14 @@ disOneInstruction::
 	ldi a, [hl]
 	ld h, [hl]
 	ld l, a
-	jp hl
+	rst callHL
+	
+	ld a, e
+	or 0x1F
+	ld e, a
+	inc de
+	res 2, d
+	ret
 
 print_op:
 	add a
