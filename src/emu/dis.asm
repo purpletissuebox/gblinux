@@ -1,6 +1,7 @@
 INCLUDE "macros.inc"
 INCLUDE "hwregs.inc"
 INCLUDE "common/vblank.inc"
+INCLUDE "gfx.inc"
 
 SECTION "8086TEST", ROMX
 test8086:
@@ -33,6 +34,8 @@ dis::
 		ldh a, [redraw_screen]
 		or RELOAD_SCROLL
 		ldh [redraw_screen], a
+		
+		call doTask
 	jr .loop
 	restoreRamBank
 	ret
@@ -57,6 +60,15 @@ joypad:
 	ld a, JOYPAD_SEL_NONE
 	ldh [IO_JOYPAD], a
 	ret
+
+doTask:
+	push de
+	ld de, .task
+	call queueGfxTask
+	pop de
+	ret
+.task:
+	GFXTASK shadow_bkg_map, 0, vram_bkg_map, 0
 
 disFullScreen:
 	call getMapTL
@@ -101,9 +113,22 @@ disOneInstruction::
 	rst callHL
 	
 	ld a, e
-	or 0x1F
+	and 0x1F
+	cpl
+	add 0x21
+		jr z, .done
+	ld l, e
+	ld h, d
 	ld e, a
-	inc de
+	ld a, " "
+	.clearLine:
+		ldi [hl], a
+		dec e
+	jr nz, .clearLine
+	
+	ld e, l
+	ld d, h
+	.done:
 	res 2, d
 	ret
 
