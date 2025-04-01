@@ -6,14 +6,14 @@ opcode_handler_C0:: ;UNUSED
 opcode_handler_C1:: ;UNUSED
 	printl "db "
 	ld a, l
-	sub (LOW(opcode_handler_C0) - 0xC0)
+	sub LOW(opcode_handler_C0 - 0xC0)
 	jp printImm8_a
 opcode_handler_C8:: ;UNUSED
 	ld a, l
 opcode_handler_C9:: ;UNUSED
 	printl "db "
 	ld a, l
-	sub (LOW(opcode_handler_C8) - 0xC0)
+	sub LOW(opcode_handler_C8 - 0xC0)
 	jp printImm8_a
 opcode_handler_D6:: ;UNUSED
 	printl "db D6"

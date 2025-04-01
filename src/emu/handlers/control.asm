@@ -78,7 +78,7 @@ opcode_handler_6E:: ;UNUSED
 opcode_handler_6F:: ;UNUSED
 	printl "db "
 	ld a, l
-	sub (LOW(opcode_handler_60) - 0x60)
+	sub LOW(opcode_handler_60 - 0x60)
 	jp printImm8_a
 
 SECTION "JUMPS", ROM0
